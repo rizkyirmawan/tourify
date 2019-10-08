@@ -1,9 +1,11 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+const morgan = require('morgan');
 
 const app = express();
 
 app.use(express.json());
+app.use(morgan('dev'));
 app.use((req, res, next) => {
 	req.requestTime = new Date().toISOString();
 	next();
@@ -17,6 +19,4 @@ const userRouter = require('./routes/userRoutes');
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
-const port = process.env.PORT || 3000;
-
-app.listen(port, () => console.log(`Up and running on port ${port}...`));
+module.exports = app;
