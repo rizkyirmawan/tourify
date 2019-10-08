@@ -19,6 +19,18 @@ exports.checkID = (req, res, next, val) => {
 	next();
 };
 
+// Check Body Middleware
+exports.checkBody = (req, res, next) => {
+	if (!req.body.name || !req.body.price) {
+		return res.status(400).json({
+			status: 'Failed',
+			message: 'Missing name or price'
+		});
+	}
+
+	next();
+};
+
 // Get All Tours
 exports.getAllTours = (req, res) => {
 	res.status(200).json({
