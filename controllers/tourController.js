@@ -1,8 +1,9 @@
 const fs = require('fs');
+const path = require('path');
 
 // Read Tours Data
 const tours = JSON.parse(
-	fs.readFileSync(`${__dirname}/../dummies/data/tours-simple.json`)
+	fs.readFileSync(path.join(`${__dirname}/../dummies/data/tours-simple.json`))
 );
 
 // Check ID Middleware
