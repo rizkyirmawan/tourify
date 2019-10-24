@@ -4,14 +4,19 @@ const app = require('./app');
 
 dotenv.config({ path: './.env' });
 
-const dbDev = process.env.DATABASE_LOCAL;
-const dbProd = process.env.DATABASE.replace(
-	'<password>',
-	process.env.DATABASE_PASSWORD
-);
+let db;
+
+if (process.env.NODE_ENV === 'development') {
+	db = process.env.DATABASE_LOCAL;
+} else {
+	db = process.env.DATABASE.replace(
+		'<password>',
+		process.env.DATABASE_PASSWORD
+	);
+}
 
 mongoose
-	.connect(dbDev, {
+	.connect(db, {
 		useNewUrlParser: true,
 		useCreateIndex: true,
 		useUnifiedTopology: true,
