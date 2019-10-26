@@ -129,6 +129,8 @@ exports.getTourStats = async (req, res) => {
 					maxPrice: { $max: '$price' }
 				}
 			},
+			{ $addFields: { groupByDifficulty: '$_id' } },
+			{ $project: { _id: 0 } },
 			{ $sort: { avgPrice: 1 } }
 		]);
 
@@ -136,6 +138,47 @@ exports.getTourStats = async (req, res) => {
 			status: 'Success',
 			data: {
 				stats
+			}
+		});
+	} catch (err) {
+		res.status(404).json({
+			status: 'Not Found',
+			message: "Unfortunately, data can't be fetched!"
+		});
+	}
+};
+
+exports.getMonthlyPlan = async (req, res) => {
+	try {
+		const year = req.params.year;
+
+		const plan = await Tour.aggregate([
+			{ $unwind: '$startDates' },
+			{
+				$match: {
+					startDates: {
+						$gte: new Date(`${year}-01-01`),
+						$lte: new Date(`${year}-12-31`)
+					}
+				}
+			},
+			{
+				$group: {
+					_id: { $month: '$startDates' },
+					totalTours: { $sum: 1 },
+					tours: { $push: '$name' }
+				}
+			},
+			{ $addFields: { month: '$_id' } },
+			{ $project: { _id: 0 } },
+			{ $sort: { totalTours: -1 } },
+			{ $limit: 12 }
+		]);
+
+		res.status(200).json({
+			status: 'Success',
+			data: {
+				plan
 			}
 		});
 	} catch (err) {
