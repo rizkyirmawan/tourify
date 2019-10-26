@@ -148,6 +148,7 @@ exports.getTourStats = async (req, res) => {
 	}
 };
 
+// Get Tours Monthly Plan using Aggregation Pipelines
 exports.getMonthlyPlan = async (req, res) => {
 	try {
 		const year = req.params.year;
