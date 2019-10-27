@@ -73,20 +73,23 @@ tourSchema.virtual('durationInWeeks').get(function() {
 	return week.toPrecision(2);
 });
 
-// Middleware Chaining
-tourSchema
-	.pre('save', function(next) {
-		this.slug = slugify(this.name, { lower: true });
-		next();
-	})
-	.pre(/^find/, function(next) {
-		this.find({ secretTour: { $ne: true } });
-		next();
-	})
-	.post(/^find/, function(docs, next) {
-		console.log(docs[0].name);
-		next();
-	});
+// Document Middleware (Case: Slug, Method: .save() and .create())
+tourSchema.pre('save', function(next) {
+	this.slug = slugify(this.name, { lower: true });
+	next();
+});
+
+// Query Middleware (Case: Secret Tour, Method: find(), findOne(), etc.)
+tourSchema.pre(/^find/, function(next) {
+	this.find({ secretTour: { $ne: true } });
+	next();
+});
+
+// Aggregation Middleware (Case: Hiding Secret Tours in Aggregation Pipeline)
+tourSchema.pre('aggregate', function(next) {
+	this.pipeline().unshift({ $match: { $ne: true } });
+	next();
+});
 
 const Tour = mongoose.model('Tour', tourSchema);
 
