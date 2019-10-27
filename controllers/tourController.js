@@ -30,7 +30,7 @@ exports.getAllTours = async (req, res) => {
 	} catch (err) {
 		res.status(404).json({
 			status: 'Not Found',
-			message: "Unfortunately, data can't be fetched!"
+			message: err
 		});
 	}
 };
@@ -49,7 +49,7 @@ exports.getTour = async (req, res) => {
 	} catch (err) {
 		res.status(404).json({
 			status: 'Not Found',
-			message: 'No data with that ID'
+			message: err
 		});
 	}
 };
@@ -59,7 +59,7 @@ exports.createTour = async (req, res) => {
 	try {
 		const newTour = await Tour.create(req.body);
 
-		res.status(200).json({
+		res.status(201).json({
 			status: 'Success',
 			data: {
 				newTour
@@ -68,7 +68,7 @@ exports.createTour = async (req, res) => {
 	} catch (err) {
 		res.status(400).json({
 			status: 'Error',
-			message: 'Invalid data sent!'
+			message: err
 		});
 	}
 };
@@ -90,7 +90,7 @@ exports.updateTour = async (req, res) => {
 	} catch (err) {
 		res.status(400).json({
 			status: 'Error',
-			message: 'Invalid data sent!'
+			message: err
 		});
 	}
 };
@@ -108,7 +108,7 @@ exports.deleteTour = async (req, res) => {
 	} catch (err) {
 		res.status(400).json({
 			status: 'Error',
-			message: 'Invalid ID sent!'
+			message: err
 		});
 	}
 };
