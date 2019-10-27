@@ -87,7 +87,7 @@ tourSchema.pre(/^find/, function(next) {
 
 // Aggregation Middleware (Case: Hiding Secret Tours in Aggregation Pipeline)
 tourSchema.pre('aggregate', function(next) {
-	this.pipeline().unshift({ $match: { $ne: true } });
+	this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
 	next();
 });
 
