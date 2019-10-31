@@ -20,6 +20,7 @@ const handleValidationError = err => {
 	return new AppError(message, 400);
 };
 
+// Development Environtment Error
 const sendErrorDev = (err, res) => {
 	res.status(err.statusCode).json({
 		status: err.status,
@@ -29,6 +30,7 @@ const sendErrorDev = (err, res) => {
 	});
 };
 
+// Production Environtment Error
 const sendErrorProd = (err, res) => {
 	if (err.isOperational) {
 		res.status(err.statusCode).json({

@@ -1,8 +1,15 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const app = require('./app');
+
+// Uncaught Exception Error Handler
+process.on('uncaughtException', err => {
+	console.log(`Uncaught Exception: ${err.name} - ${err.message}`);
+	process.exit(1);
+});
 
 dotenv.config({ path: './.env' });
+
+const app = require('./app');
 
 let db;
 
@@ -22,8 +29,17 @@ mongoose
 		useUnifiedTopology: true,
 		useFindAndModify: false
 	})
-	.then(() => console.log('MongoDB connected!'))
-	.catch(err => console.log(`Error: ${err}`));
+	.then(() => console.log('MongoDB connected!'));
 
 const port = process.env.PORT;
-app.listen(port, () => console.log(`Up and running on port ${port}...`));
+const server = app.listen(port, () =>
+	console.log(`Up and running on port ${port}...`)
+);
+
+// Unhandled Rejections Error Handler
+process.on('unhandledRejection', err => {
+	console.log(`Unhandled Rejection: ${err.name} - ${err.message}`);
+	server.close(() => {
+		process.exit(1);
+	});
+});
