@@ -11,16 +11,10 @@ dotenv.config({ path: './.env' });
 
 const app = require('./app');
 
-let db;
-
-if (process.env.NODE_ENV === 'development') {
-	db = process.env.DATABASE_LOCAL;
-} else {
-	db = process.env.DATABASE.replace(
-		'<password>',
-		process.env.DATABASE_PASSWORD
-	);
-}
+const db = process.env.DATABASE.replace(
+	'<password>',
+	process.env.DATABASE_PASSWORD
+);
 
 mongoose
 	.connect(db, {
