@@ -19,10 +19,13 @@ const userSchema = mongoose.Schema({
 	},
 	password: {
 		type: String,
-		required: true
+		select: false,
+		minlength: [7, 'Password must be at least 7 characters!'],
+		required: [true, 'Password is required']
 	},
 	passwordConfirm: {
 		type: String,
+		required: [true, 'Password confirmation is required'],
 		validate: {
 			validator: function(val) {
 				return val === this.password;
@@ -54,6 +57,11 @@ userSchema.pre('save', async function(next) {
 	this.passwordConfirm = undefined;
 	next();
 });
+
+// Compare Password Instance Method
+userSchema.methods.comparePass = async function(candidatePass, userPass) {
+	return await bcrypt.compare(candidatePass, userPass);
+};
 
 const User = mongoose.model('User', userSchema);
 
