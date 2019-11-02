@@ -40,12 +40,23 @@ exports.createUser = (req, res) => {
 };
 
 // Update User Handler
-exports.updateUser = (req, res) => {
-	res.status(500).json({
-		status: 'Error',
-		message: 'Route not defined yet!'
+exports.updateUser = catchAsync(async (req, res, next) => {
+	const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+		new: true,
+		runValidators: true
 	});
-};
+
+	if (!user) {
+		return next(new AppError('No user with given ID!', 400));
+	}
+
+	res.status(200).json({
+		status: 'Success',
+		data: {
+			updatedUser: user
+		}
+	});
+});
 
 // Delete User Handler
 exports.deleteUser = catchAsync(async (req, res, next) => {

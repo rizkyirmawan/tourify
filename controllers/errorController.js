@@ -20,6 +20,14 @@ const handleValidationError = err => {
 	return new AppError(message, 400);
 };
 
+// Handle JWT Errors
+const handleJWTError = () =>
+	new AppError('Invalid token signature! Please relog.', 401);
+
+// Handle JWT Expired Token Errors
+const handleJWTExpired = () =>
+	new AppError('Token has been expired! Please relog.', 401);
+
 // Development Environtment Error
 const sendErrorDev = (err, res) => {
 	res.status(err.statusCode).json({
@@ -58,6 +66,8 @@ module.exports = (err, req, res, next) => {
 
 		if (error.name === 'CastError') error = handleCastError(error);
 		if (error.name === 'ValidationError') error = handleValidationError(error);
+		if (error.name === 'JsonWebTokenError') error = handleJWTError();
+		if (error.name === 'TokenExpiredError') error = handleJWTExpired();
 		if (error.code === 11000) error = handleDuplicateError(error);
 
 		sendErrorProd(error, res);

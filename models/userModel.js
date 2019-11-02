@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema({
 	},
 	passwordConfirm: {
 		type: String,
-		required: [true, 'Password confirmation is required'],
+		// required: [true, 'Password confirmation is required'],
 		validate: {
 			validator: function(val) {
 				return val === this.password;
@@ -33,6 +33,7 @@ const userSchema = mongoose.Schema({
 			message: 'Password does not match the original one!'
 		}
 	},
+	passwordChangedAt: Date,
 	active: {
 		type: Boolean,
 		default: true,
@@ -61,6 +62,20 @@ userSchema.pre('save', async function(next) {
 // Compare Password Instance Method
 userSchema.methods.comparePass = async function(candidatePass, userPass) {
 	return await bcrypt.compare(candidatePass, userPass);
+};
+
+// Check If Issued JWT Token is Not Earlier Than User's Changed Password
+userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
+	if (this.passwordChangedAt) {
+		const changedTimestamp = parseInt(
+			this.passwordChangedAt.getTime() / 1000,
+			10
+		);
+
+		return JWTTimestamp < changedTimestamp;
+	}
+
+	return false;
 };
 
 const User = mongoose.model('User', userSchema);
