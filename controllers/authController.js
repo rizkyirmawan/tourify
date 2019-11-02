@@ -12,13 +12,14 @@ const signToken = id => {
 
 // Signup Handler
 exports.signUp = catchAsync(async (req, res, next) => {
-	const { name, email, password, passwordConfirm } = req.body;
+	const { name, email, password, passwordConfirm, role } = req.body;
 
 	const user = await User.create({
 		name,
 		email,
 		password,
-		passwordConfirm
+		passwordConfirm,
+		role
 	});
 
 	const token = signToken(user._id);
@@ -91,3 +92,14 @@ exports.protect = catchAsync(async (req, res, next) => {
 	req.user = currentUser;
 	next();
 });
+
+// Role-based Authorization Handler
+exports.restrictTo = (...roles) => {
+	return (req, res, next) => {
+		if (!roles.includes(req.user.role)) {
+			return next(new AppError('Forbidden access!', 403));
+		}
+
+		next();
+	};
+};
