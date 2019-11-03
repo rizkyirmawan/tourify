@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const moment = require('moment');
 
 const userSchema = mongoose.Schema({
 	name: {
@@ -62,6 +63,17 @@ userSchema.pre('save', async function(next) {
 	next();
 });
 
+// Add Now Date To Password Changed At Property
+userSchema.pre('save', function(next) {
+	if (!this.isModified('password') || this.isNew) return next();
+
+	this.passwordChangedAt = moment()
+		.subtract(1, 's')
+		.toDate();
+
+	next();
+});
+
 // Compare Password Instance Method
 userSchema.methods.comparePass = async function(candidatePass, userPass) {
 	return await bcrypt.compare(candidatePass, userPass);
@@ -90,7 +102,9 @@ userSchema.methods.createResetPasswordToken = function() {
 		.update(resetToken)
 		.digest('hex');
 
-	this.passwordResetExpires = Date.now() + (10 * 60) / 1000;
+	this.passwordResetExpires = moment()
+		.add(20, 'm')
+		.toDate();
 
 	return resetToken;
 };
