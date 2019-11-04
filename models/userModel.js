@@ -70,7 +70,6 @@ userSchema.pre('save', function(next) {
 	this.passwordChangedAt = moment()
 		.subtract(1, 's')
 		.toDate();
-
 	next();
 });
 

@@ -13,6 +13,18 @@ const signToken = id => {
 	});
 };
 
+const sendResponseToken = (user, statusCode, res) => {
+	const token = signToken(user._id);
+
+	res.status(statusCode).json({
+		status: 'Success',
+		token,
+		data: {
+			user
+		}
+	});
+};
+
 // Signup Handler
 exports.signUp = catchAsync(async (req, res, next) => {
 	const { name, email, password, passwordConfirm, role } = req.body;
@@ -25,15 +37,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
 		role
 	});
 
-	const token = signToken(user._id);
-
-	res.status(201).json({
-		status: 'Success',
-		token,
-		data: {
-			user
-		}
-	});
+	sendResponseToken(user, 201, res);
 });
 
 // Login Handler
@@ -52,11 +56,7 @@ exports.logIn = catchAsync(async (req, res, next) => {
 	}
 
 	// Send Response with Token
-	const token = signToken(user._id);
-	res.status(200).json({
-		status: 'Success',
-		token
-	});
+	sendResponseToken(user, 201, res);
 });
 
 // Route Protector Handler
@@ -160,10 +160,20 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 	user.passwordResetExpires = undefined;
 	await user.save();
 
-	const token = signToken(user._id);
+	sendResponseToken(user, 200, res);
+});
 
-	res.status(200).json({
-		status: 'Success',
-		token
-	});
+// Update Password Handler
+exports.updatePassword = catchAsync(async (req, res, next) => {
+	const user = await User.findById(req.user.id).select('+password');
+
+	if (!(await user.comparePass(req.body.passwordCurrent, user.password))) {
+		return next(new AppError('Password not match the old one!', 400));
+	}
+
+	user.password = req.body.password;
+	user.passwordConfirm = req.body.passwordConfirm;
+	await user.save();
+
+	sendResponseToken(user, 200, res);
 });
