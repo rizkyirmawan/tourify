@@ -27,14 +27,13 @@ const sendResponseToken = (user, statusCode, res) => {
 
 // Signup Handler
 exports.signUp = catchAsync(async (req, res, next) => {
-	const { name, email, password, passwordConfirm, role } = req.body;
+	const { name, email, password, passwordConfirm } = req.body;
 
 	const user = await User.create({
 		name,
 		email,
 		password,
-		passwordConfirm,
-		role
+		passwordConfirm
 	});
 
 	sendResponseToken(user, 201, res);

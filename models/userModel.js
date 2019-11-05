@@ -35,9 +35,18 @@ const userSchema = mongoose.Schema({
 			message: 'Password does not match the original one!'
 		}
 	},
-	passwordChangedAt: Date,
-	passwordResetToken: String,
-	passwordResetExpires: Date,
+	passwordChangedAt: {
+		type: Date,
+		select: false
+	},
+	passwordResetToken: {
+		type: String,
+		select: false
+	},
+	passwordResetExpires: {
+		type: Date,
+		select: false
+	},
 	active: {
 		type: Boolean,
 		default: true,
@@ -70,6 +79,12 @@ userSchema.pre('save', function(next) {
 	this.passwordChangedAt = moment()
 		.subtract(1, 's')
 		.toDate();
+	next();
+});
+
+// Hiding Inactive User and Hiding Unnecessary Fields
+userSchema.pre(/^find/, function(next) {
+	this.find({ active: { $ne: false } });
 	next();
 });
 

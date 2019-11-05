@@ -9,6 +9,8 @@ router.post('/login', auth.logIn);
 router.post('/forgot-password', auth.forgotPassword);
 router.patch('/reset-password/:token', auth.resetPassword);
 router.patch('/update-password', auth.protect, auth.updatePassword);
+router.patch('/update-me', auth.protect, user.updateMe);
+router.delete('/delete-me', auth.protect, user.deleteMe);
 
 router
 	.route('/')
