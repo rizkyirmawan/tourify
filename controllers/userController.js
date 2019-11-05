@@ -91,9 +91,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 		runValidators: true
 	});
 
-	if (!user) {
-		return next(new AppError('No user with given ID!', 400));
-	}
+	if (!user) return next(new AppError('No user with given ID!', 400));
 
 	res.status(200).json({
 		status: 'Success',
