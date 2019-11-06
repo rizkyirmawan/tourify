@@ -2,7 +2,11 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const hpp = require('hpp');
 const rateLimit = require('express-rate-limit');
+const mongoSanitize = require('express-mongo-sanitize');
 
 const app = express();
 
@@ -12,7 +16,27 @@ const limiter = rateLimit({
 	message: 'Limit reached within this IP! Try again in an hour.'
 });
 
+// Security Middlewares
+app.use(helmet());
+app.use(mongoSanitize());
+app.use(xss());
 app.use('/api', limiter);
+
+// Prevent Parameter Pollution Middleware
+app.use(
+	hpp({
+		whitelist: [
+			'duration',
+			'ratingsAverage',
+			'ratingsQuantity',
+			'difficulty',
+			'maxGroupSize',
+			'price'
+		]
+	})
+);
+
+// Dev Logger, Body Parser and Static File Middleware
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.static(path.join(`${__dirname}/public`)));
