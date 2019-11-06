@@ -2,9 +2,17 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 
+const limiter = rateLimit({
+	max: 100,
+	windowMs: 60 * 60 * 1000,
+	message: 'Limit reached within this IP! Try again in an hour.'
+});
+
+app.use('/api', limiter);
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.static(path.join(`${__dirname}/public`)));
