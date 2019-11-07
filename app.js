@@ -48,10 +48,12 @@ const globalErrorHandler = require('./controllers/errorController');
 // Define Routes
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
+const reviewRouter = require('./routes/reviewRoutes');
 
 // Use Routes
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/reviews', reviewRouter);
 
 // Undefined Route Error Handler
 app.all('*', (req, res, next) => {

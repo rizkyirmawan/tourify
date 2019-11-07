@@ -115,7 +115,7 @@ const tourSchema = mongoose.Schema(
 // Virtual Properties
 tourSchema.virtual('durationInWeeks').get(function() {
   const week = this.duration / 7;
-  return week.toPrecision(2);
+  return parseFloat(week.toPrecision(2));
 });
 
 // Document Middleware (Case: Slug, Method: .save() and .create())
