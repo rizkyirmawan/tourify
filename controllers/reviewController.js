@@ -1,7 +1,7 @@
 const Review = require('./../models/reviewModel');
 const factory = require('./handlerFactory');
 
-exports.checkBody = (req, res, next) => {
+exports.signIds = (req, res, next) => {
 	let { tour, user } = req.body;
 
 	if (!user) user = req.user.id;

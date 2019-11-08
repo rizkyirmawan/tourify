@@ -11,17 +11,27 @@ router.route('/best-5').get(tour.aliasBestFive, tour.getAllTours);
 
 router.route('/stats').get(tour.getTourStats);
 
-router.route('/monthly-plan/:year').get(tour.getMonthlyPlan);
+router
+	.route('/monthly-plan/:year')
+	.get(
+		auth.protect,
+		auth.restrictTo('admin', 'lead-guide'),
+		tour.getMonthlyPlan
+	);
 
 router
 	.route('/')
-	.get(auth.protect, tour.getAllTours)
-	.post(tour.createTour);
+	.get(tour.getAllTours)
+	.post(auth.protect, auth.restrictTo('admin', 'lead-guide'), tour.createTour);
 
 router
 	.route('/:id')
 	.get(tour.getTour)
-	.patch(tour.updateTour)
-	.delete(auth.protect, auth.restrictTo('admin'), tour.deleteTour);
+	.patch(auth.protect, auth.restrictTo('admin', 'lead-guide'), tour.updateTour)
+	.delete(
+		auth.protect,
+		auth.restrictTo('admin', 'lead-guide'),
+		tour.deleteTour
+	);
 
 module.exports = router;

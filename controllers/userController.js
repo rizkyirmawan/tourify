@@ -13,6 +13,12 @@ const filterObj = (obj, ...allowedFields) => {
 	return newObj;
 };
 
+// Get Current User Data
+exports.getMe = (req, res, next) => {
+	req.params.id = req.user.id;
+	next();
+};
+
 // Update Current User Data
 exports.updateMe = catchAsync(async (req, res, next) => {
 	// Send Error If User Tries to Update Password
