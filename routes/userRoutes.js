@@ -12,10 +12,7 @@ router.patch('/update-password', auth.protect, auth.updatePassword);
 router.patch('/update-me', auth.protect, user.updateMe);
 router.delete('/delete-me', auth.protect, user.deleteMe);
 
-router
-	.route('/')
-	.get(user.getAllUsers)
-	.post(user.createUser);
+router.route('/').get(user.getAllUsers);
 
 router
 	.route('/:id')
