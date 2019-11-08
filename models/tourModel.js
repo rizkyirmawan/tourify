@@ -118,6 +118,13 @@ tourSchema.virtual('durationInWeeks').get(function() {
   return parseFloat(week.toPrecision(2));
 });
 
+// Virtual Reviews
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id'
+});
+
 // Document Middleware (Case: Slug, Method: .save() and .create())
 tourSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true });
