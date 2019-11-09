@@ -2,10 +2,8 @@ const Review = require('./../models/reviewModel');
 const factory = require('./handlerFactory');
 
 exports.signIds = (req, res, next) => {
-	let { tour, user } = req.body;
-
-	if (!user) user = req.user.id;
-	if (!tour) tour = req.params.tourId;
+	if (!req.body.user) req.body.user = req.user.id;
+	if (!req.body.tour) req.body.tour = req.params.tourId;
 	next();
 };
 
