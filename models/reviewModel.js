@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 const Tour = require('./tourModel');
+const AppError = require('./../utils/appError');
 
 const reviewSchema = mongoose.Schema(
 	{
@@ -34,6 +35,9 @@ const reviewSchema = mongoose.Schema(
 		toObject: { virtuals: true }
 	}
 );
+
+// Prevent Duplicate Review using Index
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
 
 // Populate User and Tour
 reviewSchema.pre(/^find/, function(next) {
@@ -78,7 +82,6 @@ reviewSchema.post('save', function() {
 // Calculate Ratings on Update and Delete
 reviewSchema.pre(/^findOneAnd/, async function(next) {
 	this.rev = await this.findOne();
-	console.log(this.rev);
 	next();
 });
 
