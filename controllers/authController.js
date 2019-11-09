@@ -68,7 +68,7 @@ exports.logIn = catchAsync(async (req, res, next) => {
 	}
 
 	// Send Response with Token
-	sendResponseToken(user, 201, res);
+	sendResponseToken(user, 200, res);
 });
 
 // Route Protector Handler
