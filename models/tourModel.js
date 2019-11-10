@@ -114,9 +114,9 @@ const tourSchema = mongoose.Schema(
 );
 
 // Query Indexing
+tourSchema.index({ startLocation: '2dsphere' });
 tourSchema.index({ price: 1, ratingsAverage: -1 });
 tourSchema.index({ slug: 1 });
-tourSchema.index({ startLocation: '2dsphere' });
 
 // Virtual Properties
 tourSchema.virtual('durationInWeeks').get(function() {
@@ -154,6 +154,9 @@ tourSchema.pre(/^find/, function(next) {
 
 // Aggregation Middleware (Case: Hiding Secret Tours in Aggregation Pipeline)
 tourSchema.pre('aggregate', function(next) {
+  const key = Object.keys(this.pipeline()[0]);
+  if (key[0] === '$geoNear') return next();
+
   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
   next();
 });

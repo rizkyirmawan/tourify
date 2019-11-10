@@ -44,6 +44,41 @@ exports.getToursWithin = catchAsync(async (req, res, next) => {
 	});
 });
 
+// Get Tours Distances From a Certain Point
+exports.getTourDistances = catchAsync(async (req, res, next) => {
+	const { ltdlng, unit } = req.params;
+	const [ltd, lng] = ltdlng.split(',');
+
+	const multiplier = unit === 'mi' ? 0.000621371 : 0.001;
+
+	if (!ltd || !lng) {
+		return next(
+			new AppError(
+				'Please provide longitude and latitude separated with comma!',
+				400
+			)
+		);
+	}
+
+	const distances = await Tour.aggregate([
+		{
+			$geoNear: {
+				near: { type: 'Point', coordinates: [Number(lng), Number(ltd)] },
+				distanceField: 'distance',
+				distanceMultiplier: multiplier
+			}
+		},
+		{ $project: { distance: 1, name: 1 } }
+	]);
+
+	res.status(200).json({
+		status: 'Success',
+		data: {
+			data: distances
+		}
+	});
+});
+
 // Get Tour Stats using Aggregation Pipelines
 exports.getTourStats = catchAsync(async (req, res, next) => {
 	const stats = await Tour.aggregate([
