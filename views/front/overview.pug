@@ -1,0 +1,48 @@
+extends ./../app
+
+block content
+	.row
+
+		each tour in (tours)
+			.col-sm-4
+				.card.mb-4
+					img.card-img-top(src=`assets/img/tours/${tour.imageCover}`)
+					.card-body
+						h4.card-title #{tour.name.toUpperCase()}
+						h6.card-subtitle.text-muted #{tour.difficulty.toUpperCase()} #{tour.duration}-DAY TOUR
+						hr
+						p.card-text.text-justify
+							| #{tour.summary}
+							hr
+							table(border='0' width='100%')
+								tr
+									td 
+										i.fa.fa-map-marker-alt.text-primary.mr-2
+									td
+										| #{tour.startLocation.description}
+									td 
+										i.fa.fa-calendar.text-primary.mr-2
+									td
+										| #{moment(tour.startDates[0]).format('MMMM YYYY')}
+								tr
+									td 
+										i.fa.fa-flag.text-primary.mr-2
+									td
+										| #{tour.locations.length} Destinations
+									td 
+										i.fa.fa-users.text-primary.mr-2
+									td
+										| #{tour.maxGroupSize} Groups
+							hr
+							table(border='0' width='100%')
+								tr
+									td 
+										i.fa.fa-dollar-sign.text-primary.mr-2
+									td
+										| $#{tour.price} / Person
+									td 
+										i.fa.fa-star.text-primary.mr-2
+									td
+										| #{tour.ratingsAverage} Ratings (#{tour.ratingsQuantity})
+					.card-footer
+						a.btn.btn-primary.btn-pill.btn-block(href='#') Details &rarr;

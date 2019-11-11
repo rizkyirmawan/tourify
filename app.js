@@ -10,6 +10,10 @@ const mongoSanitize = require('express-mongo-sanitize');
 
 const app = express();
 
+app.locals.moment = require('moment');
+app.set('view engine', 'pug');
+app.set('views', path.join(`${__dirname}/views`));
+
 const limiter = rateLimit({
 	max: 100,
 	windowMs: 60 * 60 * 1000,
@@ -37,7 +41,7 @@ app.use(
 );
 
 // Dev Logger, Body Parser and Static File Middleware
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.static(path.join(`${__dirname}/public`)));
 
@@ -49,8 +53,10 @@ const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const viewRouter = require('./routes/viewRoutes');
 
 // Use Routes
+app.get('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);

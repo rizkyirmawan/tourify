@@ -1,0 +1,36 @@
+doctype html
+head
+	meta(charset='utf-8')
+	meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+
+	title Tourify - #{title}
+
+	link(href='/assets/img/favicon.png' rel='icon' type='image/png')
+	link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css')
+	link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css')
+	link(rel='stylesheet' href='/assets/css/shards.min.css')
+
+body
+
+	.container-fluid
+		.card
+		.card-body
+
+			//- Navbar
+			include partials/_navbar
+			
+			.card-body
+
+				//- Content
+				block content
+
+			//- Footer
+			include partials/_footer
+
+	// Core
+	script(src='https://code.jquery.com/jquery-3.3.1.min.js')
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js')
+	script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js')
+
+	// Theme JS
+	script(src='/assets/js/shards.min.js')
