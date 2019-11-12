@@ -4,7 +4,7 @@ block content
 	.row
 
 		each tour in (tours)
-			.col-sm-4
+			.col-md-4
 				.card.mb-4
 					img.card-img-top(src=`assets/img/tours/${tour.imageCover}`)
 					.card-body
@@ -45,4 +45,4 @@ block content
 									td
 										| #{tour.ratingsAverage} Ratings (#{tour.ratingsQuantity})
 					.card-footer
-						a.btn.btn-primary.btn-pill.btn-block(href='#') Details &rarr;
+						a.btn.btn-primary.btn-pill.btn-block(href=`/tour/${tour.slug}`) Details &rarr;

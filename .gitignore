@@ -101,6 +101,8 @@ typings/
 
 # Dummies folder
 dummies
+.vscode
 
-# ESLint config file
+# ESLint and prettier config file
 .eslintrc.*
+.prettierrc

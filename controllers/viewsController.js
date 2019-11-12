@@ -9,3 +9,15 @@ exports.getOverview = catchAsync(async (req, res, next) => {
 		tours
 	});
 });
+
+exports.getSingleTour = catchAsync(async (req, res, next) => {
+	const tour = await Tour.findOne({ slug: req.params.slug }).populate({
+		path: 'reviews',
+		fields: 'review rating user'
+	});
+
+	res.status(200).render('front/tourDetails', {
+		title: tour.name,
+		tour
+	});
+});

@@ -27,10 +27,11 @@ body
 			//- Footer
 			include partials/_footer
 
-	// Core
-	script(src='https://code.jquery.com/jquery-3.3.1.min.js')
-	script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js')
-	script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js')
+	block scripts
+		// Core
+		script(src='https://code.jquery.com/jquery-3.3.1.min.js')
+		script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js')
+		script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js')
 
-	// Theme JS
-	script(src='/assets/js/shards.min.js')
+		// Theme JS
+		script(src='/assets/js/shards.min.js')

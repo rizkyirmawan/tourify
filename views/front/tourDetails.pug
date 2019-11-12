@@ -1,0 +1,80 @@
+extends ./../app
+
+block append scripts
+	script(src='/assets/js/mapbox.js')
+
+mixin reviewBox(review)
+	.card.mb-3
+		.card-body
+			.media.mb-3
+						img.mr-3(src=`/assets/img/users/${review.user.photo}` width='64')
+						.media-body
+							h5.mt-0.mb-1 #{review.user.name}
+							p.text-justify #{review.review}
+							small.blockquote-footer
+								each star in [1, 2, 3, 4, 5]
+									i.fa.fa-star(class=`text-${review.rating >= star ? 'warning' : 'secondary'}`)
+
+mixin overviewBox(label, value, icon)
+	.col-md-6
+		.media.mb-3
+			i(class=`fa fa-${icon} fa-3x mr-3 text-info`)
+			.media-body
+				h5.mt-0.mb-1 #{label}
+				small.blockquote-footer #{value}
+
+block content
+	h1.text-center #{tour.name.toUpperCase()}
+	h6.text-info.text-center.mb-4
+		em #{tour.summary}
+	.row
+		.col-md-6
+			.card.text-white.mb-4
+				img.card-img.img-fluid(src=`/assets/img/tours/${tour.imageCover}`)
+				.card-img-overlay
+					.d-none.d-md-block.d-lg.block
+						h4.card-title ABOUT THE TOUR
+						p.card-text.text-justify
+							| #{tour.description}
+		.col-md-6
+			h4.text-left.text-muted QUICK FACTS
+			hr
+			.row
+				- const date = moment(tour.startDates[0]).format('MMMM YYYY')
+				+overviewBox('Location', tour.startLocation.description, 'map-marker-alt')
+				+overviewBox('Durations', `${tour.duration} Days`, 'clock')
+				+overviewBox('Next Date', date, 'calendar')
+				+overviewBox('Difficulty', tour.difficulty.toUpperCase(), 'dumbbell')
+				+overviewBox('Participants', `${tour.maxGroupSize} Peoples`, 'users')
+				+overviewBox('Ratings', `${tour.ratingsAverage} out of 5`, 'star')
+			h4.text-left.text-muted.mt-3 TOUR GUIDES
+			hr
+			.row
+				each guide in tour.guides
+					.col-md-6
+						.media.mb-3
+							img.mr-3(src=`/assets/img/users/${guide.photo}` width='64')
+							.media-body
+								h5.mt-0.mb-1 #{guide.name}
+								- if(guide.role === 'lead-guide')
+									small.blockquote-footer Lead Guide
+								- if(guide.role === 'guide')
+									small.blockquote-footer Tour Guide
+	.row
+		.col-md-12
+			h4.text-left.text-muted TOUR GALLERY
+			hr
+			.row.text-center
+				each image in tour.images
+					.col-md-4
+						img.rounded.img-fluid.mb-3(src=`/assets/img/tours/${image}` width='300')
+		.col-md-12
+			h4.text-left.text-muted RECENT REVIEWS
+			hr
+			.card-columns
+				each review, i in tour.reviews
+					- if(i <= 5)
+						+reviewBox(review)
+		.col-md-6
+			#map(data-locations=`${JSON.stringify(tour.locations)}`)
+					

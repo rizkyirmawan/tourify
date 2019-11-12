@@ -109,7 +109,7 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
 
 // Get Tours Monthly Plan using Aggregation Pipelines
 exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
-	const year = req.params.year;
+	const {year} = req.params;
 
 	const plan = await Tour.aggregate([
 		{ $unwind: '$startDates' },
