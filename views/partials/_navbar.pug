@@ -8,11 +8,15 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
 				a.nav-link(href='/')
 					| ALL TOURS
 		ul.navbar-nav.my-2.my-lg-0
-			li.nav.item.mr-2
-				a.btn.btn-outline-info.mb-2(href='/signin') SIGN IN
-			li.nav.item
-				a.btn.btn-outline-success.mb-2(href='/signup') SIGN UP
-			li.nav.item.ml-2
-				a.nav-link(href='#')
-					img.rounded-circle.img-fluid(src='/assets/img/users/user-21.jpg' width='30')
-					|  Rizky Irmawan
+			if (!user)
+				li.nav.item.mr-2
+					a.btn.btn-outline-info.mb-2(href='/signin') SIGN IN
+				li.nav.item
+					a.btn.btn-outline-success.mb-2(href='/signup') SIGN UP
+			else
+				li.nav.item
+					button.btn.btn-outline-secondary.mb-2#logout LOG OUT
+				li.nav.item.ml-2
+					a.nav-link(href='#')
+						img.rounded-circle(src=`/assets/img/users/${user.photo}` width='30')
+						|  #{user.name.split(' ')[0]}

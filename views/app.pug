@@ -7,11 +7,13 @@ html
 
 			title Tourify - #{title}
 			
-			link(href='/assets/img/favicon.png' rel='icon' type='image/png')
 			link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css')
 			link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css')
+			link(href='/assets/img/favicon.png' rel='icon' type='image/png')
 			link(rel='stylesheet' href='/assets/css/shards.min.css')
 			link(rel='stylesheet' href='/assets/css/app.css')
+
+			script(src='https://cdn.jsdelivr.net/npm/sweetalert2@9')
 
 	body
 
@@ -38,3 +40,8 @@ html
 
 			// Theme JS
 			script(src='/assets/js/shards.min.js')
+
+			// Custom JS
+			script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js')
+			script(src='/assets/js/app.js')
+			

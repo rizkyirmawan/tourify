@@ -111,6 +111,53 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
+// Is Logged In Middleware
+exports.isLoggedIn = async (req, res, next) => {
+  try {
+    // Check Token
+    if (req.cookies.JWT) {
+      // Verify Token
+      const decodedJWT = await promisify(jwt.verify)(
+        req.cookies.JWT,
+        process.env.JWT_SECRET
+      );
+
+      // Check If User Still Exist
+      const currentUser = await User.findById(decodedJWT.id);
+
+      if (!currentUser) {
+        return next();
+      }
+
+      // Check If User Changed Password After Token Was Issued
+      if (currentUser.changedPasswordAfter(decodedJWT.iat)) {
+        return next();
+      }
+
+      // Send User Request Object to Next Middleware
+      res.locals.user = currentUser;
+      return next();
+    }
+  } catch (err) {
+    return next();
+  }
+  next();
+};
+
+// Logging Out Users
+exports.logOut = (req, res) => {
+  // Set Token to Random String
+  res.cookie('JWT', 'Logged-out', {
+    expires: moment()
+      .add(10, 's')
+      .toDate(),
+    httpOnly: true
+  });
+
+  // Send Response
+  res.status(200).json({ status: 'Success' });
+};
+
 // Role-based Authorization Handler
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {

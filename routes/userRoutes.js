@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.post('/signup', auth.signUp);
 router.post('/login', auth.logIn);
+router.get('/logout', auth.logOut);
 router.post('/forgot-password', auth.forgotPassword);
 router.patch('/reset-password/:token', auth.resetPassword);
 
@@ -20,9 +21,9 @@ router.use(auth.restrictTo('admin'));
 router.route('/').get(user.getAllUsers);
 
 router
-	.route('/:id')
-	.get(user.getUser)
-	.patch(user.updateUser)
-	.delete(user.deleteUser);
+  .route('/:id')
+  .get(user.getUser)
+  .patch(user.updateUser)
+  .delete(user.deleteUser);
 
 module.exports = router;
