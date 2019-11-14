@@ -1,0 +1,23 @@
+extends ./../app
+
+block append scripts
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js')
+  script(src='/assets/js/login.js')
+
+block content
+  .row
+    .col-md-4.mx-auto
+      .card.mt-5.mb-5
+        .card-body
+          h5.text-center SIGN IN
+          hr
+          form#sign-in
+            .form-group
+              label(for='email') Email Address
+              input.form-control#email(type='email' required placeholder='john@example.com')
+            .form-group
+              label(for='password') Password
+              input.form-control#password(type='password' required placeholder='•••••••••' minglength='6')
+            .d-flex
+              a.p-2.mr-auto(href='#') Forgot Password?
+              button.btn.btn-primary.btn-squared.p-2(type='submit') SIGN IN

@@ -106,3 +106,7 @@ dummies
 # ESLint and prettier config file
 .eslintrc.*
 .prettierrc
+
+# Public excludes
+public/assets/js/*
+!public/assets/js/bundle.js

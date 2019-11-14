@@ -1,5 +1,9 @@
 extends ./../app
 
+block append head
+	script(src='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js')
+	link(rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css')
+
 block append scripts
 	script(src='/assets/js/mapbox.js')
 
@@ -60,21 +64,24 @@ block content
 									small.blockquote-footer Lead Guide
 								- if(guide.role === 'guide')
 									small.blockquote-footer Tour Guide
-	.row
+	
+	h4.text-left.text-muted TOUR GALLERY
+	hr
+	.row.text-center
+		each image in tour.images
+			.col-md-4
+				img.rounded.img-fluid.mb-3(src=`/assets/img/tours/${image}` width='450')
+	
+	h4.text-left.text-muted DESTINATIONS
+	hr
+	.row.mb-3
 		.col-md-12
-			h4.text-left.text-muted TOUR GALLERY
-			hr
-			.row.text-center
-				each image in tour.images
-					.col-md-4
-						img.rounded.img-fluid.mb-3(src=`/assets/img/tours/${image}` width='300')
-		.col-md-12
-			h4.text-left.text-muted RECENT REVIEWS
-			hr
-			.card-columns
-				each review, i in tour.reviews
-					- if(i <= 5)
-						+reviewBox(review)
-		.col-md-6
-			#map(data-locations=`${JSON.stringify(tour.locations)}`)
+			#map.w-100.rounded(style='height: 400px;' data-locations=`${JSON.stringify(tour.locations)}`)
+
+	h4.text-left.text-muted RECENT REVIEWS
+	hr
+	.card-columns.mb-3
+		each review, i in tour.reviews
+			- if(i <= 5)
+				+reviewBox(review)
 					
