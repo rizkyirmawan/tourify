@@ -81,4 +81,14 @@ block content
 		each review, i in tour.reviews
 			- if(i <= 5)
 				+reviewBox(review)
+	
+	.row
+		.col-md-7.mx-auto
+			.card
+				.card-body.text-center
+					h5.text-center.blockquote-footer.mb-3 #{tour.duration} Days. Infinite memories. Make it yours today for only $#{tour.price}!
+					if (user)
+						a.btn.btn-success.btn-lg.btn-pill(href='#') Book Now &rarr;
+					else
+						a.btn.btn-success.btn-lg.btn-pill(href='/signin') Signin To Book &rarr;
 					

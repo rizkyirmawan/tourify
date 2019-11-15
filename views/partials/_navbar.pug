@@ -1,22 +1,23 @@
 nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-	a.navbar-brand(href='#') Tourify
-	button.navbar-toggler(type='button' data-toggle='collapse' data-target='#nav-collapse')
-		span.navbar-toggler-icon
-	#nav-collapse.collapse.navbar-collapse
-		ul.navbar-nav.mr-auto
-			li.nav-item
-				a.nav-link(href='/')
-					| ALL TOURS
-		ul.navbar-nav.my-2.my-lg-0
-			if (!user)
-				li.nav.item.mr-2
-					a.btn.btn-outline-info.mb-2(href='/signin') SIGN IN
-				li.nav.item
-					a.btn.btn-outline-success.mb-2(href='/signup') SIGN UP
-			else
-				li.nav.item
-					button.btn.btn-outline-secondary.mb-2#logout LOG OUT
-				li.nav.item.ml-2
-					a.nav-link(href='#')
-						img.rounded-circle(src=`/assets/img/users/${user.photo}` width='30')
-						|  #{user.name.split(' ')[0]}
+	.container-fluid
+		a.navbar-brand(href='#') Tourify
+		button.navbar-toggler(type='button' data-toggle='collapse' data-target='#nav-collapse')
+			span.navbar-toggler-icon
+		#nav-collapse.collapse.navbar-collapse
+			ul.navbar-nav.mr-auto
+				li.nav-item
+					a.nav-link(href='/')
+						| ALL TOURS
+			ul.navbar-nav.my-2.my-lg-0
+				if (!user)
+					li.nav.item.mr-2
+						a.btn.btn-outline-info.mb-2(href='/signin') SIGN IN
+					li.nav.item
+						a.btn.btn-outline-success.mb-2(href='/signup') SIGN UP
+				else
+					li.nav.item
+						button.btn.btn-outline-secondary.btn-sm.mb-2#logout LOG OUT
+					li.nav.item.ml-2
+						a.nav-link(href='#')
+							img.rounded-circle(src=`/assets/img/users/${user.photo}` width='35')
+							|  #{user.name.split(' ')[0]}

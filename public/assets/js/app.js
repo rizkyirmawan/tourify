@@ -52,7 +52,7 @@ const logout = async () => {
 
     if (res.data.status === 'Success') location.reload(true);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     await Swal.fire({
       icon: 'error',
       title: 'Something went wrong. Try again!',
@@ -62,7 +62,19 @@ const logout = async () => {
 };
 
 if (logoutBtn) {
-  logoutBtn.addEventListener('click', logout);
+  logoutBtn.addEventListener('click', async () => {
+    const res = await Swal.fire({
+      title: 'Are you sure want to leave?',
+      text: 'Feel free to check back here again later!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: "Yes, I'm sure!"
+    });
+
+    if (res.value) await logout();
+  });
 }
 
 if (mapBox) {
