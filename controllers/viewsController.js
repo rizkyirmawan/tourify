@@ -30,3 +30,11 @@ exports.getSigninPage = (req, res) => {
     title: 'Sign In'
   });
 };
+
+exports.getProfile = (req, res) => {
+  const { user } = res.locals;
+
+  res.status(200).render('front/profilePage', {
+    title: `${user.name.split(' ')[0]}'s Profile`
+  });
+};

@@ -1,0 +1,71 @@
+extends ./../app
+
+block append head
+  script(src='https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js')
+
+mixin sideTab(name, text, icon)
+  a.list-group-item.list-group-item-action.d-flex.justify-content-between.align-items-center(href=`#${name}` data-toggle='list' role='tab' id=`${name}-list`)
+    |  #{text}
+    i.fa(class=`fa-${icon}`)
+
+block content
+  .row
+    .col-md-3
+      h6.text-muted USER AREA
+      .list-group.list-group-flush#list-tab(role='tablist')
+        a.list-group-item.list-group-item-action.active.d-flex.justify-content-between.align-items-center#settings-list(href='#settings' data-toggle='list' role='tab')
+          |  Settings
+          i.fa.fa-cog
+        +sideTab('bookings', 'My Bookings', 'book')
+        +sideTab('reviews', 'My Reviews', 'star')
+
+      - if (user.role === 'admin')   
+        h6.text-muted.mt-3 ADMIN AREA
+        .list-group.list-group-flush#list-tab(role='tablist')
+          +sideTab('manage-tours', 'Manage Tours', 'map')
+          +sideTab('manage-users', 'Manage Users', 'users-cog')
+          +sideTab('manage-reviews', 'Manage Reviews', 'splotch')
+          +sideTab('manage-bookings', 'Manage Bookings', 'book-medical')
+
+    .col-md-9
+      .tab-content
+        .tab-pane.fade.show.active#settings(role='tabpanel')
+          .card.mt-4
+            .card-body
+              h5.text-center UPDATE PROFILE
+              hr
+              .row
+                .col-md-6.mx-auto
+                  form#update-userdata
+                    input(type='hidden' value=`${user.id}`)
+                    .form-group
+                      label(for='name') Name:           
+                      input.form-control#name(type='text' value=`${user.name}`)
+                    .form-group
+                      label(for='email') Email:           
+                      input.form-control#email(type='email' value=`${user.email}`)
+                    .text-center
+                      img.text-center.mb-2.shadow-sm.rounded(src=`/assets/img/users/${user.photo}` width='90')
+                    .custom-file
+                      input.custom-file-input#image(type='file')
+                      label.custom-file-label(for='image') Change Profile Picture
+                    .text-right.mt-3
+                      button.btn.btn-success(type='submit') Save Changes
+          .card.mt-4
+            .card-body
+              h5.text-center CHANGE PASSWORD
+              hr
+              .row
+                .col-md-6.mx-auto
+                  form#update-password
+                    .form-group
+                      label(for='curr-pass') Current Password:           
+                      input.form-control#curr-pass(type='password' placeholder='•••••••')
+                    .form-group
+                      label(for='new-pass') New Password:           
+                      input.form-control#new-pass(type='password' placeholder='•••••••')
+                    .form-group
+                      label(for='pass-conf') Password Confirm:           
+                      input.form-control#pass-conf(type='password' placeholder='•••••••')
+                    .text-right.mt-3
+                      button.btn.btn-success(type='submit') Save Changes

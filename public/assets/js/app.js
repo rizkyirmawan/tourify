@@ -3,6 +3,7 @@
 const signinForm = document.getElementById('sign-in');
 const logoutBtn = document.getElementById('logout');
 const mapBox = document.getElementById('map');
+const customFile = document.querySelector('.custom-file-input');
 
 const signin = async (email, password) => {
   try {
@@ -50,7 +51,14 @@ const logout = async () => {
       url: 'http://localhost:3001/api/v1/users/logout'
     });
 
-    if (res.data.status === 'Success') location.reload(true);
+    if (
+      res.data.status === 'Success' &&
+      window.location.pathname !== '/profile'
+    ) {
+      location.reload(true);
+    } else if (res.data.status === 'Success') {
+      location.assign('/');
+    }
   } catch (err) {
     console.log(err);
     await Swal.fire({
@@ -122,5 +130,11 @@ if (mapBox) {
       left: 50,
       right: 50
     }
+  });
+}
+
+if (customFile) {
+  $(document).ready(function() {
+    bsCustomFileInput.init();
   });
 }
