@@ -37,7 +37,6 @@ block content
               .row
                 .col-md-6.mx-auto
                   form#update-userdata
-                    input(type='hidden' value=`${user.id}`)
                     .form-group
                       label(for='name') Name:           
                       input.form-control#name(type='text' value=`${user.name}`)
@@ -50,7 +49,7 @@ block content
                       input.custom-file-input#image(type='file')
                       label.custom-file-label(for='image') Change Profile Picture
                     .text-right.mt-3
-                      button.btn.btn-success(type='submit') Save Changes
+                      button.btn.btn-success#btn-savedata(type='submit') Save Changes
           .card.mt-4
             .card-body
               h5.text-center CHANGE PASSWORD
@@ -60,12 +59,12 @@ block content
                   form#update-password
                     .form-group
                       label(for='curr-pass') Current Password:           
-                      input.form-control#curr-pass(type='password' placeholder='•••••••')
+                      input.form-control#curr-pass(type='password' placeholder='•••••••' required)
                     .form-group
                       label(for='new-pass') New Password:           
-                      input.form-control#new-pass(type='password' placeholder='•••••••')
+                      input.form-control#new-pass(type='password' placeholder='•••••••' required)
                     .form-group
                       label(for='pass-conf') Password Confirm:           
-                      input.form-control#pass-conf(type='password' placeholder='•••••••')
+                      input.form-control#pass-conf(type='password' placeholder='•••••••' required)
                     .text-right.mt-3
-                      button.btn.btn-success(type='submit') Save Changes
+                      button.btn.btn-success#btn-savepass(type='submit') Save Changes

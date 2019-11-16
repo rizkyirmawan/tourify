@@ -4,6 +4,8 @@ const signinForm = document.getElementById('sign-in');
 const logoutBtn = document.getElementById('logout');
 const mapBox = document.getElementById('map');
 const customFile = document.querySelector('.custom-file-input');
+const updateUserForm = document.getElementById('update-userdata');
+const updatePasswordForm = document.getElementById('update-password');
 
 const signin = async (email, password) => {
   try {
@@ -36,11 +38,13 @@ const signin = async (email, password) => {
 };
 
 if (signinForm) {
-  signinForm.addEventListener('submit', el => {
+  signinForm.addEventListener('submit', async el => {
     el.preventDefault();
+    document.getElementById('btn-signin').textContent = 'SIGNING IN...';
     const emailValue = document.getElementById('email').value;
     const passwordValue = document.getElementById('password').value;
-    signin(emailValue, passwordValue);
+    await signin(emailValue, passwordValue);
+    document.getElementById('btn-signin').textContent = 'SIGN IN';
   });
 }
 
@@ -136,5 +140,93 @@ if (mapBox) {
 if (customFile) {
   $(document).ready(function() {
     bsCustomFileInput.init();
+  });
+}
+
+const updateUser = async (name, email) => {
+  try {
+    const res = await axios({
+      method: 'PATCH',
+      url: 'http://localhost:3001/api/v1/users/update-me',
+      data: {
+        name,
+        email
+      }
+    });
+
+    if (res.data.status === 'Success') {
+      Swal.fire({
+        icon: 'success',
+        title: 'Data updated successfully!',
+        showConfirmButton: false,
+        timer: 2000
+      });
+    }
+  } catch (err) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Something is wrong!',
+      text: err.response.data.message,
+      showConfirmButton: false,
+      timer: 2000
+    });
+  }
+};
+
+if (updateUserForm) {
+  updateUserForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    document.getElementById('btn-savedata').textContent = 'Updating...';
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    await updateUser(name, email);
+    document.getElementById('btn-savedata').textContent = 'Save Changes';
+  });
+}
+
+const updatePassword = async (passwordCurrent, password, passwordConfirm) => {
+  try {
+    const res = await axios({
+      method: 'PATCH',
+      url: 'http://localhost:3001/api/v1/users/update-password',
+      data: {
+        passwordCurrent,
+        password,
+        passwordConfirm
+      }
+    });
+
+    if (res.data.status === 'Success') {
+      Swal.fire({
+        icon: 'success',
+        title: 'Password successfully updated!',
+        showConfirmButton: false,
+        timer: 2000
+      });
+    }
+  } catch (err) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Something not right!',
+      text: err.response.data.message,
+      showConfirmButton: false,
+      timer: 2000
+    });
+  }
+};
+
+if (updatePasswordForm) {
+  updatePasswordForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    document.getElementById('btn-savepass').textContent = 'Updating...';
+    const passwordCurrent = document.getElementById('curr-pass').value;
+    const password = document.getElementById('new-pass').value;
+    const passwordConfirm = document.getElementById('pass-conf').value;
+    await updatePassword(passwordCurrent, password, passwordConfirm);
+
+    document.getElementById('btn-savepass').textContent = 'Save Changes';
+    document.getElementById('curr-pass').value = '';
+    document.getElementById('new-pass').value = '';
+    document.getElementById('pass-conf').value = '';
   });
 }
