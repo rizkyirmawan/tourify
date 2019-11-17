@@ -6,6 +6,7 @@ const mapBox = document.getElementById('map');
 const customFile = document.querySelector('.custom-file-input');
 const updateUserForm = document.getElementById('update-userdata');
 const updatePasswordForm = document.getElementById('update-password');
+const bookTourBtn = document.getElementById('book-btn');
 
 const signin = async (email, password) => {
   try {
@@ -64,7 +65,6 @@ const logout = async () => {
       location.assign('/');
     }
   } catch (err) {
-    console.log(err);
     await Swal.fire({
       icon: 'error',
       title: 'Something went wrong. Try again!',
@@ -209,5 +209,34 @@ if (updatePasswordForm) {
     document.getElementById('curr-pass').value = '';
     document.getElementById('new-pass').value = '';
     document.getElementById('pass-conf').value = '';
+  });
+}
+
+const bookTour = async tourId => {
+  const stripe = Stripe('pk_test_xNV1ffQZPA2jN69xTWif014y00cGwyFMJy');
+  try {
+    const session = await axios(
+      `http://localhost:3001/api/v1/bookings/checkout-session/${tourId}`
+    );
+
+    await stripe.redirectToCheckout({
+      sessionId: session.data.session.id
+    });
+  } catch (err) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Something went wrong!',
+      showConfirmButton: false,
+      timer: 1500
+    });
+  }
+};
+
+if (bookTourBtn) {
+  bookTourBtn.addEventListener('click', e => {
+    e.target.textContent = 'Processing...';
+
+    const { tourId } = e.target.dataset;
+    bookTour(tourId);
   });
 }

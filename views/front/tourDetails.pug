@@ -3,6 +3,7 @@ extends ./../app
 block append head
 	script(src='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js')
 	link(rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css')
+	script(src='https://js.stripe.com/v3/')
 
 mixin reviewBox(review)
 	.card.mb-3
@@ -88,7 +89,7 @@ block content
 				.card-body.text-center
 					h5.text-center.blockquote-footer.mb-3 #{tour.duration} Days. Infinite memories. Make it yours today for only $#{tour.price}!
 					if (user)
-						a.btn.btn-success.btn-lg.btn-pill(href='#') Book Now &rarr;
+						button#book-btn.btn.btn-success.btn-lg.btn-pill(data-tour-id=`${tour.id}`) Book Now &rarr;
 					else
 						a.btn.btn-success.btn-lg.btn-pill(href='/signin') Signin To Book &rarr;
 					
