@@ -143,6 +143,13 @@ tourSchema.pre(/^find/, function(next) {
   next();
 });
 
+// Slugify on Update
+tourSchema.post(/^findOneAnd/, async function() {
+  this.preslug = await this.findOne();
+  this.preslug.slug = slugify(this.preslug.name, { lower: true });
+  await this.updateOne({ _id: this.preslug._id }, { slug: this.preslug.slug });
+});
+
 // Populating Tour Guides
 tourSchema.pre(/^find/, function(next) {
   this.populate({

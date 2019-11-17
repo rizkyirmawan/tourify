@@ -12,7 +12,7 @@ router.patch('/reset-password/:token', auth.resetPassword);
 router.use(auth.protect);
 
 router.get('/me', user.getMe, user.getUser);
-router.patch('/update-me', user.updateMe);
+router.patch('/update-me', user.uploadUserPhoto, user.updateMe);
 router.delete('/delete-me', user.deleteMe);
 router.patch('/update-password', auth.updatePassword);
 

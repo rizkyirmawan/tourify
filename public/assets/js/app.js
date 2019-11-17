@@ -143,24 +143,28 @@ if (customFile) {
   });
 }
 
-const updateUser = async (name, email) => {
+const updateSettings = async (data, type) => {
+  const url =
+    type === 'Data'
+      ? 'http://localhost:3001/api/v1/users/update-me'
+      : 'http://localhost:3001/api/v1/users/update-password';
+
   try {
     const res = await axios({
       method: 'PATCH',
-      url: 'http://localhost:3001/api/v1/users/update-me',
-      data: {
-        name,
-        email
-      }
+      url,
+      data
     });
 
     if (res.data.status === 'Success') {
-      Swal.fire({
+      await Swal.fire({
         icon: 'success',
-        title: 'Data updated successfully!',
+        title: `${type} updated successfully!`,
         showConfirmButton: false,
         timer: 2000
       });
+
+      location.reload(true);
     }
   } catch (err) {
     Swal.fire({
@@ -177,43 +181,17 @@ if (updateUserForm) {
   updateUserForm.addEventListener('submit', async e => {
     e.preventDefault();
     document.getElementById('btn-savedata').textContent = 'Updating...';
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    await updateUser(name, email);
+
+    const form = new FormData();
+
+    form.append('name', document.getElementById('name').value);
+    form.append('email', document.getElementById('email').value);
+    form.append('photo', document.getElementById('photo').files[0]);
+
+    await updateSettings(form, 'Data');
     document.getElementById('btn-savedata').textContent = 'Save Changes';
   });
 }
-
-const updatePassword = async (passwordCurrent, password, passwordConfirm) => {
-  try {
-    const res = await axios({
-      method: 'PATCH',
-      url: 'http://localhost:3001/api/v1/users/update-password',
-      data: {
-        passwordCurrent,
-        password,
-        passwordConfirm
-      }
-    });
-
-    if (res.data.status === 'Success') {
-      Swal.fire({
-        icon: 'success',
-        title: 'Password successfully updated!',
-        showConfirmButton: false,
-        timer: 2000
-      });
-    }
-  } catch (err) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Something not right!',
-      text: err.response.data.message,
-      showConfirmButton: false,
-      timer: 2000
-    });
-  }
-};
 
 if (updatePasswordForm) {
   updatePasswordForm.addEventListener('submit', async e => {
@@ -222,7 +200,10 @@ if (updatePasswordForm) {
     const passwordCurrent = document.getElementById('curr-pass').value;
     const password = document.getElementById('new-pass').value;
     const passwordConfirm = document.getElementById('pass-conf').value;
-    await updatePassword(passwordCurrent, password, passwordConfirm);
+    await updateSettings(
+      { passwordCurrent, password, passwordConfirm },
+      'Password'
+    );
 
     document.getElementById('btn-savepass').textContent = 'Save Changes';
     document.getElementById('curr-pass').value = '';

@@ -39,15 +39,15 @@ block content
                   form#update-userdata
                     .form-group
                       label(for='name') Name:           
-                      input.form-control#name(type='text' value=`${user.name}`)
+                      input.form-control#name(type='text' value=`${user.name}` required name='name')
                     .form-group
                       label(for='email') Email:           
-                      input.form-control#email(type='email' value=`${user.email}`)
+                      input.form-control#email(type='email' value=`${user.email}` required name='email')
                     .text-center
                       img.text-center.mb-2.shadow-sm.rounded(src=`/assets/img/users/${user.photo}` width='90')
                     .custom-file
-                      input.custom-file-input#image(type='file')
-                      label.custom-file-label(for='image') Change Profile Picture
+                      input.custom-file-input#photo(type='file' name='photo')
+                      label.custom-file-label(for='photo') Change Profile Picture
                     .text-right.mt-3
                       button.btn.btn-success#btn-savedata(type='submit') Save Changes
           .card.mt-4
