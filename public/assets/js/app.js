@@ -1,5 +1,4 @@
 /* eslint-disable */
-
 const signinForm = document.getElementById('sign-in');
 const logoutBtn = document.getElementById('logout');
 const mapBox = document.getElementById('map');
@@ -35,6 +34,8 @@ const signin = async (email, password) => {
       title: err.response.data.message,
       confirmButtonText: 'Try Again'
     });
+
+    document.getElementById('password').value = '';
   }
 };
 
@@ -42,10 +43,14 @@ if (signinForm) {
   signinForm.addEventListener('submit', async el => {
     el.preventDefault();
     document.getElementById('btn-signin').textContent = 'SIGNING IN...';
+    document.getElementById('btn-signin').classList.add('disabled');
+
     const emailValue = document.getElementById('email').value;
     const passwordValue = document.getElementById('password').value;
     await signin(emailValue, passwordValue);
+
     document.getElementById('btn-signin').textContent = 'SIGN IN';
+    document.getElementById('btn-signin').classList.remove('disabled');
   });
 }
 

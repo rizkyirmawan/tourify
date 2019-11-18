@@ -87,9 +87,13 @@ block content
 		.col-md-7.mx-auto
 			.card
 				.card-body.text-center
-					h5.text-center.blockquote-footer.mb-3 #{tour.duration} Days. Infinite memories. Make it yours today for only $#{tour.price}!
-					if (user)
-						button#book-btn.btn.btn-success.btn-lg.btn-pill(data-tour-id=`${tour.id}`) Book Now &rarr;
+					if(isBooked)
+						h5.text-center.blockquote-footer.mb-3 Thank you for purchasing! You'll be notified about upcoming info. Adventure awaits!
 					else
-						a.btn.btn-success.btn-lg.btn-pill(href='/signin') Signin To Book &rarr;
+						h5.text-center.blockquote-footer.mb-3 #{tour.duration} Days. Infinite memories. Make it yours today for only $#{tour.price}!
+					if(!isBooked)
+						if (user)
+							button#book-btn.btn.btn-success.btn-lg.btn-pill(data-tour-id=`${tour.id}`) Book Now &rarr;
+						else
+							a.btn.btn-success.btn-lg.btn-pill(href='/signin') Signin To Book &rarr;
 					

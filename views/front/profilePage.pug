@@ -28,7 +28,7 @@ block content
           +sideTab('manage-bookings', 'Manage Bookings', 'book-medical')
 
     .col-md-9
-      .tab-content
+      .tab-content#nav-tabContent
         .tab-pane.fade.show.active#settings(role='tabpanel')
           .card.mt-4
             .card-body
@@ -68,3 +68,30 @@ block content
                       input.form-control#pass-conf(type='password' placeholder='•••••••' required)
                     .text-right.mt-3
                       button.btn.btn-success#btn-savepass(type='submit') Save Changes
+                      
+        .tab-pane.fade#bookings(role='tabpanel')
+          if(bookings.length <= 0)
+            .text-center
+              h5.text-muted You haven't booked any tour.
+              a.btn.btn-sm.btn-success(href='/') BOOK ONE NOW!
+          else
+            .row
+              .col-md-12
+                each booking in bookings
+                  .card.mb-3
+                    .card-body
+                      .media.mb-3
+                        img.mr-3.img-fluid.rounded(src=`/assets/img/tours/${booking.tour.imageCover}` width='480')
+                        .media-body
+                          h5.mb-3 #{booking.tour.name.toUpperCase()}
+                          p.blockquote-footer Starts #{moment(booking.tour.startDates[0]).fromNow()} from now.
+                          p.blockquote-footer Booked #{moment(booking.createdAt).fromNow()}.
+                          p.blockquote-footer Status: 
+                            if(booking.paid)
+                              span.badge.badge-success Paid
+                            else
+                              span.badge.badge-danger Not Paid
+                          p.blockquote-footer Total Paid:
+                            b  $#{booking.price}
+                          .text-right.fixed-botton
+                            a.btn.btn-info(href=`/tour/${booking.tour.slug}`) Go to Tour Page

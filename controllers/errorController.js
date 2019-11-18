@@ -40,7 +40,7 @@ const sendErrorDev = (err, req, res) => {
   }
 
   return res.status(err.statusCode).render('partials/_error', {
-    title: "Something's Not Right",
+    title: 'Something Went To Space!',
     msg: err.message
   });
 };
