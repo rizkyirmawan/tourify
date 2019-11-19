@@ -56,7 +56,7 @@ app.use(express.static(path.join(`${__dirname}/public`)));
 app.use(cookieParser());
 
 // Error Handlers
-const AppError = require('./utils/AppError');
+const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 
 // Define Routes
