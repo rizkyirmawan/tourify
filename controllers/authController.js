@@ -22,7 +22,7 @@ const sendResponseToken = (user, statusCode, req, res) => {
       .add(process.env.JWT_COOKIE_EXPIRES, 'd')
       .toDate(),
     httpOnly: true,
-    secure: req.secure || req.headers('x-forwarded-proto') === 'https'
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https'
   });
 
   user.password = undefined;
