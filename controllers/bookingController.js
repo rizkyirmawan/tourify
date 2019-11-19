@@ -1,7 +1,7 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET);
-const Booking = require('../models/bookingModel');
-const Tour = require('../models/tourModel');
-const catchAsync = require('../utils/catchAsync');
+const Booking = require('./../models/bookingModel');
+const Tour = require('./../models/tourModel');
+const catchAsync = require('./../utils/catchAsync');
 const factory = require('./handlerFactory');
 
 exports.getCheckout = catchAsync(async (req, res, next) => {
