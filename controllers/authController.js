@@ -14,16 +14,15 @@ const signToken = id => {
   });
 };
 
-const sendResponseToken = (user, statusCode, res) => {
+const sendResponseToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
   const cookieOptions = {
     expires: moment()
       .add(process.env.JWT_COOKIE_EXPIRES, 'd')
       .toDate(),
-    httpOnly: true
+    httpOnly: true,
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https'
   };
-
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
   res.cookie('JWT', token, cookieOptions);
 
@@ -53,7 +52,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
   const url = `${req.protocol}://${req.get('host')}/signin`;
   await new Email(user.email, user, url).sendWelcome();
 
-  sendResponseToken(user, 201, res);
+  sendResponseToken(user, 201, req, res);
 });
 
 // Login Handler
@@ -72,7 +71,7 @@ exports.logIn = catchAsync(async (req, res, next) => {
   }
 
   // Send Response with Token
-  sendResponseToken(user, 200, res);
+  sendResponseToken(user, 200, req, res);
 });
 
 // Route Protector Handler
@@ -219,7 +218,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.passwordResetExpires = undefined;
   await user.save();
 
-  sendResponseToken(user, 200, res);
+  sendResponseToken(user, 200, req, res);
 });
 
 // Update Password Handler
@@ -234,5 +233,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save();
 
-  sendResponseToken(user, 200, res);
+  sendResponseToken(user, 200, req, res);
 });

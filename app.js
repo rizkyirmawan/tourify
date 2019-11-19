@@ -5,15 +5,24 @@ const path = require('path');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cors = require('cors');
+const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 
 const app = express();
 
+// Enable Moment as Locals Variable and Setting Pug Template Engine
 app.locals.moment = require('moment');
 app.set('view engine', 'pug');
 app.set('views', path.join(`${__dirname}/views`));
 
+// Implementing GZIP Compression and CORS
+app.use(compression());
+app.use(cors());
+app.options('*', cors());
+
+// Rate Limiter
 const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000,

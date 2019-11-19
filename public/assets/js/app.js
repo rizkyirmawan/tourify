@@ -11,7 +11,7 @@ const signin = async (email, password) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://localhost:3001/api/v1/users/login',
+      url: '/api/v1/users/login',
       data: {
         email,
         password
@@ -58,7 +58,7 @@ const logout = async () => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://localhost:3001/api/v1/users/logout'
+      url: '/api/v1/users/logout'
     });
 
     if (
@@ -151,8 +151,8 @@ if (customFile) {
 const updateSettings = async (data, type) => {
   const url =
     type === 'Data'
-      ? 'http://localhost:3001/api/v1/users/update-me'
-      : 'http://localhost:3001/api/v1/users/update-password';
+      ? '/api/v1/users/update-me'
+      : '/api/v1/users/update-password';
 
   try {
     const res = await axios({
@@ -220,9 +220,7 @@ if (updatePasswordForm) {
 const bookTour = async tourId => {
   const stripe = Stripe('pk_test_xNV1ffQZPA2jN69xTWif014y00cGwyFMJy');
   try {
-    const session = await axios(
-      `http://localhost:3001/api/v1/bookings/checkout-session/${tourId}`
-    );
+    const session = await axios(`/api/v1/bookings/checkout-session/${tourId}`);
 
     await stripe.redirectToCheckout({
       sessionId: session.data.session.id
