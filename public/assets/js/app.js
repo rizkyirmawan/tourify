@@ -29,6 +29,7 @@ const signin = async (email, password) => {
       location.assign('/');
     }
   } catch (err) {
+    console.log(err);
     await Swal.fire({
       icon: 'error',
       title: err.response.data.message,
