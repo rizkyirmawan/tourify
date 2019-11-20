@@ -30,7 +30,7 @@
 	<li>Run <code>cp .env.example .env</code> to copy necessary configuration variables</li>
 	<li>Modify <code>.env</code> file with your own credentials</li>
 	<li>Run <code>npm run dev</code> to start application in development mode</li>
-		<li>Application should be running at port <code>3001</code> by default</li>
+		<li>Application should be running at port <code>3000</code> by default</li>
 </ol>
 <h2>License</h2>
 <a href="https://opensource.org/licenses/MIT">MIT</a>
