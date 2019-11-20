@@ -9,6 +9,7 @@ const cors = require('cors');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
+const booking = require('./controllers/bookingController');
 
 const app = express();
 
@@ -47,6 +48,13 @@ app.use(
       'price'
     ]
   })
+);
+
+// Stripe Webhook Checkout
+app.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  booking.webhookCheckout
 );
 
 // Dev Logger, Body Parser and Static File Middleware
