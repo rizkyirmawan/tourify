@@ -7,6 +7,17 @@ const updateUserForm = document.getElementById('update-userdata');
 const updatePasswordForm = document.getElementById('update-password');
 const bookTourBtn = document.getElementById('book-btn');
 
+function showAlert(icon, title, text = '', showConfirm, showCancel, timer = 3) {
+  Swal.fire({
+    icon,
+    title,
+    text,
+    showConfirmButton: showConfirm,
+    showCancelButton: showCancel,
+    timer: timer * 1000
+  });
+}
+
 const signin = async (email, password) => {
   try {
     const res = await axios({
@@ -19,21 +30,12 @@ const signin = async (email, password) => {
     });
 
     if (res.data.status === 'Success') {
-      await Swal.fire({
-        icon: 'success',
-        title: 'You are now signed in!',
-        showConfirmButton: false,
-        timer: 1500
-      });
+      await showAlert('success', 'You are now signed in!', null, false, false);
 
       location.assign('/');
     }
   } catch (err) {
-    await Swal.fire({
-      icon: 'error',
-      title: err.response.data.message,
-      confirmButtonText: 'Try Again'
-    });
+    await showAlert('success', err.response.data.message, null, false, false);
 
     document.getElementById('password').value = '';
   }
@@ -162,23 +164,24 @@ const updateSettings = async (data, type) => {
     });
 
     if (res.data.status === 'Success') {
-      await Swal.fire({
-        icon: 'success',
-        title: `${type} updated successfully!`,
-        showConfirmButton: false,
-        timer: 2000
-      });
+      await showAlert(
+        'success',
+        `${type} successfully updated!`,
+        null,
+        false,
+        false
+      );
 
       location.reload(true);
     }
   } catch (err) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Something is wrong!',
-      text: err.response.data.message,
-      showConfirmButton: false,
-      timer: 2000
-    });
+    showAlert(
+      'error',
+      'Something went wrong!',
+      err.response.data.message,
+      false,
+      false
+    );
   }
 };
 
@@ -226,12 +229,13 @@ const bookTour = async tourId => {
       sessionId: session.data.session.id
     });
   } catch (err) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Something went wrong!',
-      showConfirmButton: false,
-      timer: 1500
-    });
+    showAlert(
+      'error',
+      'Something went wrong!',
+      err.response.data.message,
+      false,
+      false
+    );
   }
 };
 
