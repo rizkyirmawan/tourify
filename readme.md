@@ -1,5 +1,5 @@
 <h1>Tourify</h1>
-<p>Tour selling API (and server-side rendered website) with features like CRUD operations, JWT authentication, stripe payments, etc. <a href="https://tourify-bicksoe.herokuapp.com" target="_blank">Live demo</a></p>
+<p>Tour selling API (and server-side rendered website) with features like CRUD operations, JWT authentication, stripe payments, etc. <a href="https://tourify-bicksoe.herokuapp.com" target="_blank">Live demo</a> & <a href="https://documenter.getpostman.com/view/9417457/SW18wac1?version=latest">Postman documentation</a></p>
 <h2>Features</h2>
 <ul>
 	<li>Full authentication
