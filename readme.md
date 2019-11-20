@@ -1,5 +1,5 @@
 <h1>Tourify</h1>
-<p>API pemesanan tour dengan fitur CRUD, autentikasi JWT, stripe payments, etc.</p>
+<p>API pemesanan tour dengan fitur CRUD, autentikasi JWT, stripe payments, etc. <a href="https://tourify-bicksoe.herokuapp.com">Live demo</a></p>
 <h2>Features</h2>
 <ul>
 	<li>Full authentication
