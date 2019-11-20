@@ -22,5 +22,15 @@
 	<li><a href="https://github.com/Automattic/mongoose">Mongoose</a> - ODM</li>
 	<li><a href="https://github.com/pugjs/pug">Pug</a> - Template Engine</li>
 </ul>
+<h2>Installation</h2>
+<ol>
+	<li>Clone the repo</li>
+	<li>Run terminal and navigate to the repo</li>
+	<li>Run `npm install` to install all required dependencies</li>
+	<li>Run `cp .env.example .env` to copy necessary configuration variables</li>
+	<li>Modify `.env` file with your own credentials</li>
+	<li>Run `npm run dev` to start application in development mode</li>
+	<li>Application should be running at port `3001` by default</li>
+</ol>
 <h2>License</h2>
 <a href="https://opensource.org/licenses/MIT">MIT</a>
