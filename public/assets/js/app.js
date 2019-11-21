@@ -247,3 +247,14 @@ if (bookTourBtn) {
     bookTour(tourId);
   });
 }
+
+const alertMessage = document.querySelector('body').dataset.alert;
+if (alertMessage)
+  showAlert(
+    'success',
+    alertMessage,
+    'Please check your email for receipment.',
+    false,
+    false,
+    5
+  );
